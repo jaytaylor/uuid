@@ -8,14 +8,10 @@ and 5 UUIDs as specified in [RFC 4122](http://www.ietf.org/rfc/rfc4122.txt).
 
 Use the `go` tool:
 
-	$ go get github.com/nu7hatch/gouuid
+	$ go get github.com/jaytaylor/gouuid
 
 ## Usage
 
-See [documentation and examples](http://godoc.org/github.com/nu7hatch/gouuid)
+See [documentation and examples](https://godoc.org/github.com/jaytaylor/gouuid)
 for more information.
 
-## Copyright
-
-Copyright (C) 2011 by Krzysztof Kowalik <chris@nu7hat.ch>. See [COPYING](https://github.com/nu7hatch/gouuid/tree/master/COPYING)
-file for details.
