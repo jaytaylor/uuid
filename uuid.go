@@ -133,25 +133,37 @@ func (u *UUID) setBytesFromHash(hash hash.Hash, ns, name []byte) {
 func (u *UUID) setVariant(v byte) {
 	switch v {
 	case ReservedNCS:
-		u[8] = (u[8] | ReservedNCS) & 0xBF
+		// unset bit 7
+		u[8] &= ^byte(ReservedNCS)
 	case ReservedRFC4122:
-		u[8] = (u[8] | ReservedRFC4122) & 0x7F
+		// set bit 7
+		u[8] |= ReservedNCS
+		// unset bit 6
+		u[8] &= ^byte(ReservedRFC4122)
 	case ReservedMicrosoft:
-		u[8] = (u[8] | ReservedMicrosoft) & 0x3F
+		// set bits 6 & 7
+		u[8] |= ReservedNCS | ReservedRFC4122
+		// unset bit 5
+		u[8] &= ^byte(ReservedMicrosoft)
 	}
 }
 
 // Variant returns the UUID Variant, which determines the internal
 // layout of the UUID. This will be one of the constants: RESERVED_NCS,
 // RFC_4122, RESERVED_MICROSOFT, RESERVED_FUTURE.
+// See rfc4122 section 4.1.1: http://www.ietf.org/rfc/rfc4122.txt
 func (u *UUID) Variant() byte {
-	if u[8]&ReservedNCS == ReservedNCS {
+	if u[8]&ReservedNCS == 0 {
+		// 0 x x
 		return ReservedNCS
-	} else if u[8]&ReservedRFC4122 == ReservedRFC4122 {
+	} else if u[8]&ReservedRFC4122 == 0 {
+		// 1 0 x
 		return ReservedRFC4122
-	} else if u[8]&ReservedMicrosoft == ReservedMicrosoft {
+	} else if u[8]&ReservedMicrosoft == 0 {
+		// 1 1 x
 		return ReservedMicrosoft
 	}
+	// 1 1 1
 	return ReservedFuture
 }
 
@@ -186,13 +198,13 @@ func (u *UUID) String() string {
 }
 
 func (u *UUID) MarshalJSON() ([]byte, error) {
-    str := "\""+u.String()+"\""
-    return []byte(str), nil
+	str := "\"" + u.String() + "\""
+	return []byte(str), nil
 }
 
 func (u *UUID) UnmarshalJSON(data []byte) error {
-    str := strings.Replace(string(data), "\"", "", -1)
-    new_uuid, err := ParseHex(str)
-    copy(u[:], new_uuid[:])
-    return err
+	str := strings.Replace(string(data), "\"", "", -1)
+	new_uuid, err := ParseHex(str)
+	copy(u[:], new_uuid[:])
+	return err
 }
