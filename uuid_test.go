@@ -162,6 +162,17 @@ func TestUnmarshalJSON(t *testing.T) {
 	}
 }
 
+func TestV4SpecCompliance(t *testing.T) {
+	uid, err := NewV4()
+	if err != nil {
+		t.Fatal(err)
+	}
+	v4Expr := regexp.MustCompile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$")
+	if !v4Expr.MatchString(uid.String()) {
+		t.Fatalf("UUID=%s did not match v4Expr=%s", uid.String(), v4Expr.String())
+	}
+}
+
 func BenchmarkParseHex(b *testing.B) {
 	s := "f3593cff-ee92-40df-4086-87825b523f13"
 	for i := 0; i < b.N; i++ {
