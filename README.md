@@ -8,10 +8,10 @@ and 5 UUIDs as specified in [RFC 4122](http://www.ietf.org/rfc/rfc4122.txt).
 
 Use the `go` tool:
 
-	$ go get github.com/jaytaylor/gouuid
+	$ go get github.com/jaytaylor/uuid
 
 ## Usage
 
-See [documentation and examples](https://godoc.org/github.com/jaytaylor/gouuid)
+See [documentation and examples](https://godoc.org/github.com/jaytaylor/uuid)
 for more information.
 
