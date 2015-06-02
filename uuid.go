@@ -13,9 +13,10 @@ import (
 	"errors"
 	"hash"
 	"regexp"
+	"strings"
 )
 
-// The UUID reserved variants. 
+// The UUID reserved variants.
 const (
 	ReservedNCS       byte = 0x80
 	ReservedRFC4122   byte = 0x40
@@ -182,4 +183,16 @@ func (u *UUID) String() string {
 	hex.Encode(buf[24:], u[10:])
 
 	return string(buf)
+}
+
+func (u *UUID) MarshalJSON() ([]byte, error) {
+    str := "\""+u.String()+"\""
+    return []byte(str), nil
+}
+
+func (u *UUID) UnmarshalJSON(data []byte) error {
+    str := strings.Replace(string(data), "\"", "", -1)
+    new_uuid, err := ParseHex(str)
+    copy(u[:], new_uuid[:])
+    return err
 }
