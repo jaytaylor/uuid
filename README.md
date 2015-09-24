@@ -1,17 +1,15 @@
-# Pure Go UUID implementation
+# DEPRECATED DUE TO POOR RELIABILITY
 
-This package provides immutable UUID structs and the functions
-NewV3, NewV4, NewV5 and Parse() for generating versions 3, 4
-and 5 UUIDs as specified in [RFC 4122](http://www.ietf.org/rfc/rfc4122.txt).
+## PLEASE DO DO NOT USE!
 
-## Installation
+This package is deprecated due to my having observed it generating duplicate UUID's in the wild from `uuid.NewV4()`.
 
-Use the `go` tool:
+## Recommendation
 
-	$ go get github.com/jaytaylor/uuid
+The current recommended UUID package for go is [satori/go.uuid](https://github.com/satori/go.uuid).
 
-## Usage
+### Also, RE: nu7hatch
 
-See [documentation and examples](https://godoc.org/github.com/jaytaylor/uuid)
-for more information.
+If I could, I would also nuke [nu7hatch/go-uuid](https://github.com/nu7hatch/gouuid) from existence, as the core
+of this package is identical to it.
 
